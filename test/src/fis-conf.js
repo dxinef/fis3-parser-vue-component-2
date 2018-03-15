@@ -1,5 +1,5 @@
 
-var fis3_parser_vue_compontent = require("../../index");
+var fis3_parser_vue_component = require("../../index");
 
 fis.match("*.js", {
     parser: [
@@ -12,7 +12,7 @@ fis.match("*.js", {
 fis.match("*.vue", {
     rExt: 'js',
     parser: [
-        fis3_parser_vue_compontent,
+        fis3_parser_vue_component,
         fis.plugin('babel-6.x', {
             plugins: ["transform-es2015-modules-amd"]
         })
