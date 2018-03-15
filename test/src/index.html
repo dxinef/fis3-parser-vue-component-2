@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <!-- <script src="https://cdn.bootcss.com/vue/2.5.13/vue.js"></script> -->
+    <script src="https://cdn.bootcss.com/require.js/2.3.5/require.min.js"></script>
+</head>
+<body>
+<div class="app" id="app">
+    <component1></component1>
+    <component2></component2>
+    <component3></component3>
+</div>
+
+    
+<script>
+require.config({
+    baseUrl: "js/",
+    paths: {
+        "Vue": ["https://cdn.bootcss.com/vue/2.5.13/vue"]
+    }
+});
+
+requirejs(["main"]);
+
+
+</script>
+
+</body>
+</html>
