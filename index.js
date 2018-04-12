@@ -46,7 +46,7 @@ module.exports = function(content, file, conf) {
     var css_scopedId = conf.cssScopedIdPrefix + fis.util.md5(file.subpath, 8),
         css_isScoped = false;
     
-    var css_str = JSON.stringify( vuec.styles.map(function(style){
+    var css_content = vuec.styles.map(function(style){
         if(!style.content) return "";
         var css = fis.compile.partial(style.content, file, {
               ext: style.lang || 'css',
@@ -66,9 +66,29 @@ module.exports = function(content, file, conf) {
             css_isScoped = true;
         }
         return css;
-      }).join("") );
+      }).join("");
 
-    output += insertCSS(css_str) + "\n";
+    // 导出CSS文件
+    if(conf.extractCSS) {
+        var css_filename = file.realpathNoExt + ".css";
+        var css_file = fis.file.wrap(css_filename);
+        css_file.cache = file.cache;
+        css_file.isCssLike = true;
+        css_file.setContent(css_content);
+        fis.compile.process(css_file);
+        css_file.links.forEach(function(derived) {
+            file.addLink(derived);
+        });
+
+        file.derived.push(css_file);
+        file.addRequire(css_file.getId());
+        console.log(file)
+        console.log(css_file)
+    }
+    else {
+        output += insertCSS(JSON.stringify(css_content) ) + "\n";
+    }
+
     output += css_isScoped ? "_exports_._scopeId = " + JSON.stringify(css_scopedId) + ";\n" : "";
 
     // return
